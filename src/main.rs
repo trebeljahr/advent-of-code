@@ -3,6 +3,8 @@
 #[path = "2025/mod.rs"]
 mod days_2025;
 
+mod utils;
+
 use inquire::Select;
 use std::fs;
 
@@ -29,6 +31,10 @@ fn run_day_of_choice(choice: String) {
 
     if day_to_run == "day_1" {
         days_2025::day_1::solution();
+    }
+
+    if day_to_run == "day_2" {
+        days_2025::day_2::solution();
     }
 }
 

@@ -1,16 +1,4 @@
-use std::{
-    fs::File,
-    io::{BufReader, prelude::*},
-    path::Path,
-};
-
-fn lines_from_file(filename: impl AsRef<Path>) -> Vec<String> {
-    let file = File::open(filename).expect("no such file");
-    let buf = BufReader::new(file);
-    buf.lines()
-        .map(|l| l.expect("Could not parse line"))
-        .collect()
-}
+use crate::utils::file_reader::lines_from_file;
 
 pub fn solution() {
     let lines = lines_from_file("./src/2025/day_1/password-rotation.txt");
