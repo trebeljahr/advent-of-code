@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use crate::utils::file_reader::lines_from_file;
 
 pub fn solution() {
@@ -19,10 +21,9 @@ pub fn solution() {
                 .iter()
                 .map(|p| p.parse::<i64>().unwrap())
                 .for_each(|n| sum += n);
-
-            println!("Sum of patterns: {}", sum);
         }
     }
+    println!("Sum of patterns: {}", sum);
 }
 
 fn create_duplicate_pattern(range_split: Vec<&str>) -> Vec<String> {
@@ -33,17 +34,19 @@ fn create_duplicate_pattern(range_split: Vec<&str>) -> Vec<String> {
 
     println!("\nStart: {}, End: {}", start, end);
 
-    let mut patterns: Vec<String> = Vec::new();
+    let mut patterns = HashSet::new();
     let mut filtered_patterns: Vec<String> = Vec::new();
 
-    for i in 1..=9
-        .to_string()
-        .repeat(max_pattern_len / 2)
-        .parse::<i64>()
-        .unwrap()
-    {
-        let pattern = format!("{}", i.to_string().repeat(2));
-        patterns.push(pattern);
+    for j in 2..=max_pattern_len {
+        for i in 1..=9
+            .to_string()
+            .repeat(max_pattern_len / j)
+            .parse::<i64>()
+            .unwrap()
+        {
+            let pattern = format!("{}", i.to_string().repeat(j));
+            patterns.insert(pattern);
+        }
     }
 
     for pattern in patterns {
