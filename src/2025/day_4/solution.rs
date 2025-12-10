@@ -2,11 +2,13 @@ pub fn solution() {
     let lines = crate::utils::file_reader::lines_from_file("./src/2025/day_4/paper.txt");
 
     // println!("Lines: {:?}", lines);
-    find_neighbours(lines);
+    let sum = find_neighbours(lines, 0);
+    println!("Final Sum: {}", sum);
 }
 
-fn find_neighbours(lines: Vec<String>) {
-    let mut sum = 0;
+fn find_neighbours(mut lines: Vec<String>, mut sum: i32) -> i32 {
+    let mut indices_to_remove: Vec<(usize, usize)> = vec![];
+
     for (y, line) in lines.iter().enumerate() {
         for (x, c) in line.chars().enumerate() {
             if c != '@' {
@@ -42,9 +44,19 @@ fn find_neighbours(lines: Vec<String>) {
 
             if (neighbour_count < 4) {
                 sum += 1;
+
+                indices_to_remove.push((y, x));
             }
         }
     }
 
-    println!("Sum: {}", sum);
+    if (indices_to_remove.len() > 0) {
+        for (y, x) in indices_to_remove {
+            lines[y].replace_range(x..=x, ".");
+        }
+
+        return find_neighbours(lines, sum);
+    }
+
+    return sum;
 }
