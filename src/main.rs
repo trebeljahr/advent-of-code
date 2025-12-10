@@ -46,7 +46,10 @@ fn run_day_of_choice(choice: String) {
 }
 
 fn main() {
-    let options = fetch_options_for_years_from_filesystem();
+    let mut options = fetch_options_for_years_from_filesystem();
+
+    options.sort();
+    options.reverse();
 
     let ans = Select::new("Which day do you want to run?", options).prompt();
 
