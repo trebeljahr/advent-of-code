@@ -36,6 +36,10 @@ fn run_day_of_choice(choice: String) {
     if day_to_run == "day_2" {
         days_2025::day_2::solution();
     }
+
+    if day_to_run == "day_3" {
+        days_2025::day_3::solution();
+    }
 }
 
 fn main() {
