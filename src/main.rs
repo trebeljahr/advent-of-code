@@ -16,7 +16,6 @@ fn fetch_options_for_years_from_filesystem() -> Vec<String> {
     for path in paths {
         let unwrapped_path = path.unwrap().path();
 
-        println!("Name: {}", unwrapped_path.display());
         if unwrapped_path.is_dir() {
             path_output.push(unwrapped_path.display().to_string());
         }
@@ -40,26 +39,14 @@ fn run_day_of_choice(choice: String) {
     if day_to_run == "day_3" {
         days_2025::day_3::solution();
     }
+
+    if day_to_run == "day_4" {
+        days_2025::day_4::solution();
+    }
 }
 
 fn main() {
-    println!("Hello, world!");
-
     let options = fetch_options_for_years_from_filesystem();
-
-    // let options: Vec<&str> = vec![
-    //     "Banana",
-    //     "Apple",
-    //     "Strawberry",
-    //     "Grapes",
-    //     "Lemon",
-    //     "Tangerine",
-    //     "Watermelon",
-    //     "Orange",
-    //     "Pear",
-    //     "Avocado",
-    //     "Pineapple",
-    // ];
 
     let ans = Select::new("Which day do you want to run?", options).prompt();
 
