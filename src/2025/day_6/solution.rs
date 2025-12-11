@@ -6,12 +6,11 @@ pub fn solution() {
     println!("White space columns: {:?}", split_idxs);
 
     let mut nums_by_col: Vec<Vec<i64>> = vec![vec![]; split_idxs.len()];
+    let mut nums_by_col_part_2: Vec<Vec<String>> = vec![vec![]; split_idxs.len()];
+
     let mut operators_by_col: Vec<Vec<String>> = vec![vec![]; split_idxs.len()];
 
     for j in 0..lines.len() {
-        let mut nums: Vec<i64> = vec![];
-        let mut operators: Vec<String> = vec![];
-
         for i in 0..split_idxs.len() {
             let start = if i > 0 { split_idxs[i - 1] } else { 0 };
             let end = split_idxs[i];
@@ -20,24 +19,49 @@ pub fn solution() {
 
             if sub_slice.contains(&['+', '*']) {
                 let parsed_result = sub_slice.trim().to_string();
-                operators.push(parsed_result.clone());
                 operators_by_col[i].push(parsed_result.clone());
             } else {
                 let parsed_result = sub_slice.trim().parse::<i64>().unwrap();
-                nums.push(parsed_result);
                 nums_by_col[i].push(parsed_result);
+
+                nums_by_col_part_2[i].push(sub_slice.to_string());
+            }
+        }
+    }
+
+    let mut sum_of_results = 0;
+    let mut sum_of_results_2 = 0;
+
+    for i in 0..nums_by_col_part_2.len() {
+        let col = &nums_by_col_part_2[i];
+
+        let mut out_nums: Vec<String> = vec!["".to_string(); col[0].len()];
+        for num in col {
+            for digit_i in (0..num.len()).rev() {
+                let digit = &num.chars().nth(digit_i).unwrap().to_string();
+                out_nums[digit_i] += digit;
             }
         }
 
-        // println!("Nums {:?} and Operators {:?}", nums, operators);
+        let out: Vec<i64> = out_nums
+            .iter()
+            .filter(|s| s.contains(|c: char| c.is_alphanumeric()))
+            .map(|n| n.trim().parse::<i64>().unwrap())
+            .collect();
+
+        let operator = &operators_by_col[i][0];
+        let mut result = if operator == "+" { 0 } else { 1 };
+
+        out.iter().for_each(|n| {
+            if (operator == "+") {
+                result += n;
+            } else if (operator == "*") {
+                result *= n;
+            }
+        });
+
+        sum_of_results_2 += result;
     }
-
-    println!(
-        "Nums {:?} and Operators {:?}",
-        nums_by_col, operators_by_col
-    );
-
-    let mut sum_of_results = 0;
 
     for i in 0..operators_by_col.len() {
         let operator = &operators_by_col[i][0];
@@ -54,10 +78,10 @@ pub fn solution() {
         });
 
         sum_of_results += result;
-        println!("Result: {:?}", result);
     }
 
-    println!("Sum of Results: {:?}", sum_of_results)
+    println!("Sum of Results for 1st Star: {:?}", sum_of_results);
+    println!("Sum of Results for 2nd Star: {:?}", sum_of_results_2);
 }
 
 pub fn find_white_space_columns_in_input(lines: Vec<String>) -> Vec<usize> {
