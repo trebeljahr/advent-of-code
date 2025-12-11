@@ -15,3 +15,6 @@ pub mod day_5;
 
 #[path = "day_6/solution.rs"]
 pub mod day_6;
+
+#[path = "day_7/solution.rs"]
+pub mod day_7;
