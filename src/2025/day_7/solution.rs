@@ -1,5 +1,6 @@
 pub fn solution() {
-    let lines = crate::utils::file_reader::lines_from_file("./src/2025/day_7/teleporter.txt");
+    let mut lines =
+        crate::utils::file_reader::lines_from_file("./src/2025/day_7/teleporter-example.txt");
     println!("Lines: {:?}", lines);
 
     let beam_idx = lines[0].find("S").unwrap();
@@ -7,29 +8,35 @@ pub fn solution() {
 
     let mut count = 0;
 
-    for i in 1..lines.len() {
-        let line = &lines[i];
+    for i in 0..lines.len() {
+        for j in 0..lines[i].len() {
+            let mut chars: Vec<char> = lines[i].chars().collect();
 
-        for j in 0..line.len() {
-            let char = line.chars().nth(j).unwrap();
+            let char = lines[i].chars().nth(j).unwrap();
             if (char == '.' && beam_positions.contains(&j)) {
-                continue;
+                chars[j] = '|';
             }
 
             if (char == '^' && beam_positions.contains(&j)) {
                 count += 1;
                 if (j != 0) {
+                    chars[j - 1] = '|';
                     beam_positions.push(j - 1);
                 }
 
-                if (j + 1 < line.len()) {
+                if (j + 1 < lines[i].len()) {
+                    chars[j + 1] = '|';
                     beam_positions.push(j + 1)
                 };
 
                 beam_positions.retain(|pos| *pos != j)
             }
+
+            lines[i] = chars.into_iter().collect();
         }
     }
 
     println!("Answer: {:?}", count);
+
+    // println!("Lines: \n{}", lines.join("\n").replace("\\n", "\n"));
 }
