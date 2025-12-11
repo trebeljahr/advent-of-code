@@ -44,36 +44,48 @@ pub fn solution() {
     let mut dist_arr: Vec<(&String, &i64)> = distances.iter().collect();
 
     dist_arr.sort_by(|(_, dist1), (_, dist2)| dist1.cmp(dist2));
-    println!("Distance Array Sorted: {:?}", dist_arr);
+    // println!("Distance Array Sorted: {:?}", dist_arr);
 
     let mut circuits: Vec<HashSet<String>> = vec![];
     let max_connections = 10;
-    for i in 0..max_connections {
+    let mut i = 0;
+    let mut num_connections = 0;
+
+    while num_connections < max_connections && i < dist_arr.len() {
         let (key, _dist) = dist_arr[i];
+        i += 1;
 
         let ids: Vec<&str> = key.split(':').collect();
-        println!("{:?}", ids);
 
         let id_1 = ids[0];
         let id_2 = ids[1];
 
-        let mut any_circuit_had_id = false;
+        let mut connected_to_existing_circuit = false;
+
         for j in 0..circuits.len() {
             let circuit_contains_id_1 = circuits[j].contains(id_1);
             let circuit_contains_id_2 = circuits[j].contains(id_2);
 
+            if (circuit_contains_id_1 && circuit_contains_id_2) {
+                connected_to_existing_circuit = true;
+                continue;
+            }
+
             if (circuit_contains_id_1 && !circuit_contains_id_2) {
+                connected_to_existing_circuit = true;
+                num_connections += 1;
                 circuits[j].insert(id_2.to_string());
             }
 
             if (circuit_contains_id_2 && !circuit_contains_id_1) {
+                connected_to_existing_circuit = true;
+                num_connections += 1;
+
                 circuits[j].insert(id_1.to_string());
             }
-
-            any_circuit_had_id = circuit_contains_id_1 || circuit_contains_id_2;
         }
 
-        if (any_circuit_had_id) {
+        if (connected_to_existing_circuit) {
             continue;
         }
 
@@ -82,6 +94,23 @@ pub fn solution() {
         new_circuit.insert(id_2.to_string());
 
         circuits.push(new_circuit);
+
+        println!("New connection: {:?},{:?}", id_1, id_2);
+        num_connections += 1;
+    }
+
+    for i in 0..circuits.len() {
+        for j in 0..circuits.len() {
+            if (i == j) {
+                continue;
+            }
+
+            circuits[i].iter().for_each(|id| {
+                if (circuits[j].contains(id)) {
+                    println!("Conflict, found overlapping circuits");
+                }
+            });
+        }
     }
 
     circuits.sort_by(|a, b| b.len().cmp(&a.len()));
