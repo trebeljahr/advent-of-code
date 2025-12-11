@@ -1,16 +1,15 @@
 use std::collections::{HashMap, HashSet};
 
 pub fn solution() {
-    let lines =
-        crate::utils::file_reader::lines_from_file("./src/2025/day_8/junction-boxes-example.txt");
+    let lines = crate::utils::file_reader::lines_from_file("./src/2025/day_8/junction-boxes.txt");
 
-    println!("{:?}", lines);
+    // println!("{:?}", lines);
 
     let mut pos_arr: Vec<Position> = vec![];
     for line in lines {
         let nums: Vec<i64> = line.split(',').map(|s| s.parse::<i64>().unwrap()).collect();
 
-        println!("Nums: {:?}", nums);
+        // println!("Nums: {:?}", nums);
 
         pos_arr.push(Position {
             x: nums[0],
@@ -47,45 +46,115 @@ pub fn solution() {
     // println!("Distance Array Sorted: {:?}", dist_arr);
 
     let mut circuits: Vec<HashSet<String>> = vec![];
-    let max_connections = 10;
     let mut i = 0;
-    let mut num_connections = 0;
+    let max_connections = 1000;
 
-    while num_connections < max_connections && i < dist_arr.len() {
+    while i < dist_arr.len() && i < max_connections {
         let (key, _dist) = dist_arr[i];
-        i += 1;
 
         let ids: Vec<&str> = key.split(':').collect();
 
         let id_1 = ids[0];
         let id_2 = ids[1];
 
-        let mut connected_to_existing_circuit = false;
+        println!(
+            "\n\nNum Connections Made So Far: {}, max_i {}",
+            i,
+            dist_arr.len(),
+        );
+        println!("Current Circuits: {:?}", circuits);
+        println!("Current connection: {}-{}", id_1, id_2);
 
-        for j in 0..circuits.len() {
-            let circuit_contains_id_1 = circuits[j].contains(id_1);
-            let circuit_contains_id_2 = circuits[j].contains(id_2);
+        if (circuits.len() >= 3) {
+            let mut circuits_clone = circuits.clone();
+            circuits_clone.sort_by(|a, b| b.len().cmp(&a.len()));
 
-            if (circuit_contains_id_1 && circuit_contains_id_2) {
-                connected_to_existing_circuit = true;
+            println!(
+                "3 Biggest Circuit lengths: {:?}, {:?}, {:?}",
+                circuits_clone[0].len(),
+                circuits_clone[1].len(),
+                circuits_clone[2].len()
+            );
+        }
+
+        i += 1;
+
+        let circuits_clone = circuits.clone();
+
+        let idx_of_circuits_containing_id_1: Vec<(usize, &HashSet<String>)> = circuits_clone
+            .iter()
+            .enumerate()
+            .filter(|(_, circuit)| circuit.contains(id_1))
+            .collect();
+
+        let idx_of_circuits_containing_id_2: Vec<(usize, &HashSet<String>)> = circuits_clone
+            .iter()
+            .enumerate()
+            .filter(|(_, circuit)| circuit.contains(id_2))
+            .collect();
+
+        let idx_of_circuits_containing_both_ids: Vec<(usize, &HashSet<String>)> = circuits_clone
+            .iter()
+            .enumerate()
+            .filter(|(_, circuit)| circuit.contains(id_1) && circuit.contains(id_2))
+            .collect();
+
+        if (idx_of_circuits_containing_id_1.len() == 1
+            && idx_of_circuits_containing_id_2.len() == 1)
+        {
+            let (idx_1, _dist) = idx_of_circuits_containing_id_1[0];
+
+            let (idx_2, _dist) = idx_of_circuits_containing_id_2[0];
+
+            if (idx_1 == idx_2) {
+                println!(
+                    "Connection {}-{} is in circuit {} already",
+                    id_1, id_2, idx_1
+                );
+                println!("Skipping...");
                 continue;
             }
 
-            if (circuit_contains_id_1 && !circuit_contains_id_2) {
-                connected_to_existing_circuit = true;
-                num_connections += 1;
-                circuits[j].insert(id_2.to_string());
-            }
+            println!(
+                "Connection {}-{} is in circuits {} and {} already",
+                id_1, id_2, idx_1, idx_2
+            );
 
-            if (circuit_contains_id_2 && !circuit_contains_id_1) {
-                connected_to_existing_circuit = true;
-                num_connections += 1;
+            let merged: HashSet<_> = circuits[idx_1].union(&circuits[idx_2]).cloned().collect();
 
-                circuits[j].insert(id_1.to_string());
-            }
+            circuits[idx_1] = merged;
+            circuits.remove(idx_2);
         }
 
+        if (idx_of_circuits_containing_id_1.len() > 1) {
+            println!("Collision!!! Needs merging!");
+        }
+
+        if (idx_of_circuits_containing_id_2.len() > 1) {
+            println!("Collision!!! Needs merging!");
+        }
+
+        if (idx_of_circuits_containing_both_ids.len() > 1) {
+            println!("Collision!!! Needs merging!");
+        }
+
+        if (idx_of_circuits_containing_id_1.len() > 0 && idx_of_circuits_containing_id_2.len() == 0)
+        {
+            let (idx, _dist) = idx_of_circuits_containing_id_1[0];
+            circuits[idx].insert(id_2.to_string());
+        }
+
+        if (idx_of_circuits_containing_id_2.len() > 0 && idx_of_circuits_containing_id_1.len() == 0)
+        {
+            let (idx, _dist) = idx_of_circuits_containing_id_2[0];
+            circuits[idx].insert(id_1.to_string());
+        }
+
+        let connected_to_existing_circuit =
+            idx_of_circuits_containing_id_1.len() > 0 || idx_of_circuits_containing_id_2.len() > 0;
+
         if (connected_to_existing_circuit) {
+            print!("No new circuits created");
             continue;
         }
 
@@ -95,8 +164,7 @@ pub fn solution() {
 
         circuits.push(new_circuit);
 
-        println!("New connection: {:?},{:?}", id_1, id_2);
-        num_connections += 1;
+        // println!("New connection: {:?},{:?}", id_1, id_2);
     }
 
     for i in 0..circuits.len() {
@@ -115,10 +183,17 @@ pub fn solution() {
 
     circuits.sort_by(|a, b| b.len().cmp(&a.len()));
 
-    println!("Circuits: {:?}", circuits);
+    println!("\n\nCircuits Final: {:?}", circuits);
+    println!("Circuits Length: {:?}", circuits.len());
+
+    println!("Circuit Lengths: ");
+    for i in 0..circuits.len() {
+        print!("{:?} ", circuits[i].len());
+    }
+    print!("\n");
 
     println!(
-        "Circuit lengths: {:?}, {:?}, {:?}",
+        "3 Biggest Circuit lengths: {:?}, {:?}, {:?}",
         circuits[0].len(),
         circuits[1].len(),
         circuits[2].len()
