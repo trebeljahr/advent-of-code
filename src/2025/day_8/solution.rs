@@ -6,8 +6,11 @@ pub fn solution() {
     // println!("{:?}", lines);
 
     let mut pos_arr: Vec<Position> = vec![];
-    for line in lines {
-        let nums: Vec<i64> = line.split(',').map(|s| s.parse::<i64>().unwrap()).collect();
+    for i in 0..lines.len() {
+        let nums: Vec<i64> = lines[i]
+            .split(',')
+            .map(|s| s.parse::<i64>().unwrap())
+            .collect();
 
         // println!("Nums: {:?}", nums);
 
@@ -47,9 +50,9 @@ pub fn solution() {
 
     let mut circuits: Vec<HashSet<String>> = vec![];
     let mut i = 0;
-    let max_connections = 1000;
+    // let max_connections = 1000;
 
-    while i < dist_arr.len() && i < max_connections {
+    while i < dist_arr.len() {
         let (key, _dist) = dist_arr[i];
 
         let ids: Vec<&str> = key.split(':').collect();
@@ -57,24 +60,46 @@ pub fn solution() {
         let id_1 = ids[0];
         let id_2 = ids[1];
 
-        println!(
-            "\n\nNum Connections Made So Far: {}, max_i {}",
-            i,
-            dist_arr.len(),
-        );
-        println!("Current Circuits: {:?}", circuits);
-        println!("Current connection: {}-{}", id_1, id_2);
+        if (circuits.len() == 1 && circuits[0].len() == lines.len()) {
+            let (key, _dist) = dist_arr[i - 1];
+
+            let ids: Vec<&str> = key.split(':').collect();
+
+            let a = ids[0].split(',').take(1).collect::<Vec<&str>>()[0]
+                .parse::<i64>()
+                .unwrap();
+            let b = ids[1].split(',').take(1).collect::<Vec<&str>>()[0]
+                .parse::<i64>()
+                .unwrap();
+
+            println!(
+                "Done iterating!!! Last connection was from {:?} to {:?}",
+                a, b
+            );
+
+            println!("Result of X values multiplied {:?}", a * b,);
+
+            break;
+        }
+
+        // println!(
+        //     "\n\nNum Connections Made So Far: {}, max_i {}",
+        //     i,
+        //     dist_arr.len(),
+        // );
+        // println!("Current Circuits: {:?}", circuits);
+        // println!("Current connection: {}-{}", id_1, id_2);
 
         if (circuits.len() >= 3) {
             let mut circuits_clone = circuits.clone();
             circuits_clone.sort_by(|a, b| b.len().cmp(&a.len()));
 
-            println!(
-                "3 Biggest Circuit lengths: {:?}, {:?}, {:?}",
-                circuits_clone[0].len(),
-                circuits_clone[1].len(),
-                circuits_clone[2].len()
-            );
+            // println!(
+            //     "3 Biggest Circuit lengths: {:?}, {:?}, {:?}",
+            //     circuits_clone[0].len(),
+            //     circuits_clone[1].len(),
+            //     circuits_clone[2].len()
+            // );
         }
 
         i += 1;
@@ -93,12 +118,6 @@ pub fn solution() {
             .filter(|(_, circuit)| circuit.contains(id_2))
             .collect();
 
-        let idx_of_circuits_containing_both_ids: Vec<(usize, &HashSet<String>)> = circuits_clone
-            .iter()
-            .enumerate()
-            .filter(|(_, circuit)| circuit.contains(id_1) && circuit.contains(id_2))
-            .collect();
-
         if (idx_of_circuits_containing_id_1.len() == 1
             && idx_of_circuits_containing_id_2.len() == 1)
         {
@@ -107,35 +126,23 @@ pub fn solution() {
             let (idx_2, _dist) = idx_of_circuits_containing_id_2[0];
 
             if (idx_1 == idx_2) {
-                println!(
-                    "Connection {}-{} is in circuit {} already",
-                    id_1, id_2, idx_1
-                );
-                println!("Skipping...");
+                // println!(
+                //     "Connection {}-{} is in circuit {} already",
+                //     id_1, id_2, idx_1
+                // );
+                // println!("Skipping...");
                 continue;
             }
 
-            println!(
-                "Connection {}-{} is in circuits {} and {} already",
-                id_1, id_2, idx_1, idx_2
-            );
+            // println!(
+            //     "Connection {}-{} is in circuits {} and {} already",
+            //     id_1, id_2, idx_1, idx_2
+            // );
 
             let merged: HashSet<_> = circuits[idx_1].union(&circuits[idx_2]).cloned().collect();
 
             circuits[idx_1] = merged;
             circuits.remove(idx_2);
-        }
-
-        if (idx_of_circuits_containing_id_1.len() > 1) {
-            println!("Collision!!! Needs merging!");
-        }
-
-        if (idx_of_circuits_containing_id_2.len() > 1) {
-            println!("Collision!!! Needs merging!");
-        }
-
-        if (idx_of_circuits_containing_both_ids.len() > 1) {
-            println!("Collision!!! Needs merging!");
         }
 
         if (idx_of_circuits_containing_id_1.len() > 0 && idx_of_circuits_containing_id_2.len() == 0)
@@ -163,8 +170,6 @@ pub fn solution() {
         new_circuit.insert(id_2.to_string());
 
         circuits.push(new_circuit);
-
-        // println!("New connection: {:?},{:?}", id_1, id_2);
     }
 
     for i in 0..circuits.len() {
@@ -183,25 +188,25 @@ pub fn solution() {
 
     circuits.sort_by(|a, b| b.len().cmp(&a.len()));
 
-    println!("\n\nCircuits Final: {:?}", circuits);
-    println!("Circuits Length: {:?}", circuits.len());
+    // println!("\n\nCircuits Final: {:?}", circuits);
+    // println!("Circuits Length: {:?}", circuits.len());
 
-    println!("Circuit Lengths: ");
-    for i in 0..circuits.len() {
-        print!("{:?} ", circuits[i].len());
-    }
-    print!("\n");
+    // println!("Circuit Lengths: ");
+    // for i in 0..circuits.len() {
+    //     print!("{:?} ", circuits[i].len());
+    // }
+    // print!("\n");
 
-    println!(
-        "3 Biggest Circuit lengths: {:?}, {:?}, {:?}",
-        circuits[0].len(),
-        circuits[1].len(),
-        circuits[2].len()
-    );
+    // println!(
+    //     "3 Biggest Circuit lengths: {:?}, {:?}, {:?}",
+    //     circuits[0].len(),
+    //     circuits[1].len(),
+    //     circuits[2].len()
+    // );
 
-    let out = circuits[0].len() * circuits[1].len() * circuits[2].len();
+    // let out = circuits[0].len() * circuits[1].len() * circuits[2].len();
 
-    println!("Result: {:?}", out);
+    // println!("Result: {:?}", out);
 }
 
 fn make_key_unordered(a: &str, b: &str) -> String {
