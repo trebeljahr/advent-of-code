@@ -5,24 +5,24 @@ mod days_2025;
 
 mod utils;
 
-// use inquire::Select;
-// use std::fs;
+use inquire::Select;
+use std::fs;
 
-// fn fetch_options_for_years_from_filesystem() -> Vec<String> {
-//     let paths = fs::read_dir("./src/2025").unwrap();
+fn fetch_options_for_years_from_filesystem() -> Vec<String> {
+    let paths = fs::read_dir("./src/2025").unwrap();
 
-//     let mut path_output: Vec<String> = Vec::new();
+    let mut path_output: Vec<String> = Vec::new();
 
-//     for path in paths {
-//         let unwrapped_path = path.unwrap().path();
+    for path in paths {
+        let unwrapped_path = path.unwrap().path();
 
-//         if unwrapped_path.is_dir() {
-//             path_output.push(unwrapped_path.display().to_string());
-//         }
-//     }
+        if unwrapped_path.is_dir() {
+            path_output.push(unwrapped_path.display().to_string());
+        }
+    }
 
-//     return path_output;
-// }
+    return path_output;
+}
 
 fn run_day_of_choice(choice: String) {
     let day_to_run = choice.replace("./src/2025/", "");
@@ -59,20 +59,22 @@ fn run_day_of_choice(choice: String) {
     if day_to_run == "day_8" {
         days_2025::day_8::solution();
     }
+
+    if day_to_run == "day_9" {
+        days_2025::day_9::solution();
+    }
 }
 
 fn main() {
-    // let mut options = fetch_options_for_years_from_filesystem();
+    let mut options = fetch_options_for_years_from_filesystem();
 
-    // options.sort();
-    // options.reverse();
+    options.sort();
+    options.reverse();
 
-    run_day_of_choice("day_8".to_string());
+    let ans = Select::new("Which day do you want to run?", options).prompt();
 
-    // let ans = Select::new("Which day do you want to run?", options).prompt();
-
-    // match ans {
-    //     Ok(choice) => run_day_of_choice(choice),
-    //     Err(_) => println!("There was an error, please try again"),
-    // }
+    match ans {
+        Ok(choice) => run_day_of_choice(choice),
+        Err(_) => println!("There was an error, please try again"),
+    }
 }
