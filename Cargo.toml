@@ -2,6 +2,10 @@
 name = "advent-of-code"
 version = "0.1.0"
 edition = "2024"
+description = "Advent of Code 2025 solutions in Rust, run from an interactive day picker"
+authors = ["Rico Trebeljahr"]
+license = "AGPL-3.0-or-later"
+repository = "https://github.com/trebeljahr/advent-of-code"
 
 [dependencies]
 inquire = "0.9.1"

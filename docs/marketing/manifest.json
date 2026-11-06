@@ -1,0 +1,60 @@
+{
+  "generated": "2026-11-06",
+  "generatedBy": "node scripts/marketing/capture-screenshots.mjs",
+  "files": [
+    {
+      "path": "screenshots/day-picker.png",
+      "purpose": "README screenshot of the day menu",
+      "source": "Real output of cargo run, recorded in a pseudo-terminal (screenshots/day-picker.ansi) and rendered with social-preview/template.html?v=terminal",
+      "width": 2000,
+      "height": 764,
+      "bytes": 92459,
+      "sha256": "c6e33e6ecb2f1a2f9af45c70d1f72a7ef01e8b5a41ca1ad5f2c90e6200d39f74"
+    },
+    {
+      "path": "screenshots/day-picker.ansi",
+      "purpose": "Raw terminal recording behind day-picker.png",
+      "source": "python3 pty recording of target/debug/advent-of-code",
+      "width": null,
+      "height": null,
+      "bytes": 336,
+      "sha256": "928e8c3ef0c00fd894eb71e3c262c9883cf59d8562aa53c6f885b5c627094ed1"
+    },
+    {
+      "path": "social-preview/social-preview-a.png",
+      "purpose": "GitHub social preview, option A (terminal-led)",
+      "source": "social-preview/template.html?v=a with the recorded day menu",
+      "width": 1280,
+      "height": 640,
+      "bytes": 97342,
+      "sha256": "9cdc68a5b1279243125e933752c818704875bbc0e34c50ee41230264fb85ea56"
+    },
+    {
+      "path": "social-preview/social-preview-b.png",
+      "purpose": "GitHub social preview, option B (typographic)",
+      "source": "social-preview/template.html?v=b",
+      "width": 1280,
+      "height": 640,
+      "bytes": 51405,
+      "sha256": "7085293f386a5e09ff717f7bd4f6a3e212c7d3c621206c428eae548b6072f056"
+    },
+    {
+      "path": "social-preview/social-preview-c.png",
+      "purpose": "GitHub social preview, option C (dark, code-led)",
+      "source": "social-preview/template.html?v=c with the first 18 lines of merge_overlapping_ranges from src/2025/day_5/solution.rs",
+      "width": 1280,
+      "height": 640,
+      "bytes": 88781,
+      "sha256": "400deb5a5e2de8601bedc679ffc20a1d5b5a7036c7229d5288778a448e1ff53e"
+    },
+    {
+      "path": "social-preview/template.html",
+      "purpose": "HTML/CSS source for the screenshot frame and the three cards",
+      "source": "Hand-written; system fonts (SF Pro, SF Mono / Menlo)",
+      "width": null,
+      "height": null,
+      "bytes": 6241,
+      "sha256": "f7a6a4491c28d572d492ceca6aa75ec9714a21858d3d5f8972319a7fa1ff7d66"
+    }
+  ]
+}

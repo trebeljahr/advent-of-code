@@ -1,0 +1,131 @@
+<!doctype html>
+<!--
+  Source for the README screenshot and the GitHub social preview cards.
+  Rendered by scripts/marketing/capture-screenshots.mjs, which injects the
+  recorded day-picker output (window.setTerminal) and a real excerpt of
+  src/2025/day_5/solution.rs (window.setCode). ?v= picks the layout:
+  terminal (README screenshot), a (screenshot-led), b (typographic), c (code, dark).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>advent-of-code social preview</title>
+<style>
+  :root {
+    --paper: #f4efe6;
+    --ink: #1f1d1a;
+    --muted: #6f675c;
+    --rust: #b7410e;
+    --term: #16181d;
+    --term-ink: #e6e1d8;
+    --mono: "SF Mono", Menlo, "DejaVu Sans Mono", monospace;
+    --sans: -apple-system, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); }
+  .view { display: none; }
+  body[data-v="terminal"] #terminal-only,
+  body[data-v="a"] #a, body[data-v="b"] #b, body[data-v="c"] #c { display: flex; }
+
+  .window { background: var(--term); border-radius: 14px; box-shadow: 0 18px 50px rgba(31,29,26,.28); overflow: hidden; }
+  .window .bar { height: 34px; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: #22252c; }
+  .window .bar i { width: 12px; height: 12px; border-radius: 50%; background: #4a4e57; display: block; }
+  .window .bar span { margin-left: 10px; font: 500 13px var(--mono); color: #8b919c; }
+  .term-body { margin: 0; padding: 22px 26px 26px; font: 500 20px/1.5 var(--mono); color: var(--term-ink); white-space: pre; }
+  .prompt { color: #8b919c; }
+
+  /* README screenshot */
+  #terminal-only { width: 1000px; padding: 0; background: transparent; }
+  #terminal-only .window { width: 100%; box-shadow: none; border-radius: 12px; }
+
+  .card { width: 1280px; height: 640px; padding: 64px; position: relative; overflow: hidden; }
+  .eyebrow { font: 600 22px var(--mono); color: var(--rust); letter-spacing: .02em; }
+  .url { font: 500 22px var(--mono); color: var(--muted); }
+
+  /* A: screenshot-led */
+  #a { gap: 48px; align-items: center; }
+  #a .text { width: 400px; flex: none; display: flex; flex-direction: column; gap: 22px; }
+  #a h1 { margin: 0; font-size: 56px; line-height: 1.02; letter-spacing: -.02em; font-weight: 800; }
+  #a p { margin: 0; font-size: 26px; line-height: 1.35; color: var(--muted); }
+  #a .window { flex: 1; }
+  #a .term-body { font-size: 23px; padding: 24px 28px 28px; }
+
+  /* B: typographic */
+  #b { flex-direction: column; justify-content: space-between; }
+  #b h1 { margin: 18px 0 0; font-size: 104px; line-height: .98; letter-spacing: -.035em; font-weight: 800; }
+  #b h1 em { font-style: normal; color: var(--rust); }
+  #b .days { display: flex; gap: 14px; }
+  #b .day { width: 86px; height: 86px; border: 3px solid var(--ink); border-radius: 12px; display: grid; place-items: center; font: 700 36px var(--mono); }
+  #b .foot { display: flex; justify-content: space-between; align-items: end; }
+  #b .foot p { margin: 0; font: 500 24px var(--mono); color: var(--muted); }
+
+  /* C: code, dark */
+  #c { background: var(--term); color: var(--term-ink); flex-direction: column; gap: 26px; }
+  #c .head { display: flex; justify-content: space-between; align-items: baseline; }
+  #c h1 { margin: 0; font-size: 44px; font-weight: 800; letter-spacing: -.02em; }
+  #c h1 span { color: #f0883e; }
+  #c .file { font: 500 20px var(--mono); color: #8b919c; }
+  #c pre { margin: 0; font: 500 23px/1.45 var(--mono); white-space: pre; }
+  #c .fade { position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(transparent, var(--term)); }
+  .k { color: #ff7b72; } .t { color: #79c0ff; } .n { color: #a5d6ff; } .f { color: #d2a8ff; } .c { color: #8b949e; }
+</style>
+</head>
+<body>
+  <div id="terminal-only" class="view">
+    <div class="window">
+      <div class="bar"><i></i><i></i><i></i><span>cargo run</span></div>
+      <pre class="term-body"></pre>
+    </div>
+  </div>
+
+  <section id="a" class="view card">
+    <div class="text">
+      <div class="eyebrow">advent-of-code</div>
+      <h1>Advent of Code<br>2025 in Rust</h1>
+      <p>Days 1 to 9. Run <code style="font-family:var(--mono);color:var(--ink)">cargo run</code> and pick a day.</p>
+      <div class="url">github.com/trebeljahr</div>
+    </div>
+    <div class="window">
+      <div class="bar"><i></i><i></i><i></i><span>cargo run</span></div>
+      <pre class="term-body"></pre>
+    </div>
+  </section>
+
+  <section id="b" class="view card">
+    <div>
+      <div class="eyebrow">trebeljahr/advent-of-code</div>
+      <h1>Advent of Code 2025,<br><em>solved in Rust.</em></h1>
+    </div>
+    <div class="foot">
+      <div class="days"><div class="day">1</div><div class="day">2</div><div class="day">3</div><div class="day">4</div><div class="day">5</div><div class="day">6</div><div class="day">7</div><div class="day">8</div><div class="day">9</div></div>
+      <p>cargo run</p>
+    </div>
+  </section>
+
+  <section id="c" class="view card">
+    <div class="head">
+      <h1>Advent of Code 2025 <span>in Rust</span></h1>
+      <div class="file">src/2025/day_5/solution.rs</div>
+    </div>
+    <pre id="code"></pre>
+    <div class="fade"></div>
+  </section>
+
+<script>
+  const v = new URLSearchParams(location.search).get("v") || "a";
+  document.body.dataset.v = v;
+  window.setTerminal = (html) => {
+    for (const el of document.querySelectorAll(".term-body")) el.innerHTML = '<span class="prompt">$ cargo run</span>\n' + html;
+  };
+  // Minimal Rust highlighter: comments, keywords, types, numbers, calls.
+  window.setCode = (src) => {
+    const esc = src.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+    const html = esc.replace(
+      /(\/\/[^\n]*)|\b(fn|let|mut|loop|for|in|if|continue|break|return|struct|pub|use)\b|\b(Vec|Range|i64|usize|bool|std::cmp)\b|\b(\d+)\b|\b([a-z_][a-z0-9_]*)(?=\()/g,
+      (m, c, k, t, n, f) => c ? `<span class="c">${c}</span>` : k ? `<span class="k">${k}</span>` : t ? `<span class="t">${t}</span>` : n ? `<span class="n">${n}</span>` : `<span class="f">${f}</span>`
+    );
+    document.getElementById("code").innerHTML = html;
+  };
+</script>
+</body>
+</html>
