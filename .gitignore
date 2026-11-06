@@ -32,3 +32,7 @@ venv/
 .env.test
 .envrc.local
 .vercel/
+
+# Advent of Code puzzle inputs and examples: the puzzle author asks people
+# not to publish them. Keep your own copies locally next to each solution.
+/src/*/day_*/*.txt
