@@ -1,4 +1,4 @@
-// Renders the README screenshot and the GitHub social preview cards.
+// Renders the README screenshot.
 //
 //   node scripts/marketing/capture-screenshots.mjs
 //
@@ -6,8 +6,6 @@
 //    the real day-picker output, colour codes included.
 // 2. Turns that output into HTML and renders it with headless Chromium to
 //    docs/marketing/screenshots/day-picker.png.
-// 3. Renders docs/marketing/social-preview/template.html in its three variants
-//    to social-preview-a.png, -b.png and -c.png (1280x640).
 //
 // Playwright is not a project dependency: the script uses PLAYWRIGHT_MODULE, a
 // local install, or the global one (`npm i -g playwright`), in that order.
@@ -114,12 +112,4 @@ await frame.screenshot({ path: join(marketing, "screenshots/day-picker.png") });
 console.log("wrote docs/marketing/screenshots/day-picker.png");
 await page.close();
 
-const card = await browser.newPage({ viewport: { width: 1280, height: 640 }, deviceScaleFactor: 1 });
-for (const v of ["a", "b", "c"]) {
-  await card.goto(pathToFileURL(join(marketing, "social-preview/template.html")).href + `?v=${v}`);
-  await prepare(card);
-  const out = join(marketing, `social-preview/social-preview-${v}.png`);
-  await card.screenshot({ path: out });
-  console.log("wrote", out);
-}
 await browser.close();
